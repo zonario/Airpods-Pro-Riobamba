@@ -1,532 +1,668 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Casa de los Asados | Menú y Pedidos</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
-    <!-- Phosphor Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <title>ZonaRio | Apple Premium Riobamba</title>
     
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            orange: '#f97316',
-                            red: '#ef4444',
-                            dark: '#1c1917',
-                            darker: '#0c0a09',
-                            gray: '#292524'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
-                        display: ['Bebas Neue', 'cursive'],
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Meta Tags para Social Media y WhatsApp (Open Graph) -->
+    <meta name="description" content="Tu tecnología Apple favorita en Riobamba. iPhone 15, AirPods Pro 2 y más. Pago contra entrega y garantía real.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.instagram.com/_zonario_/">
+    <meta property="og:title" content="ZonaRio | Apple Premium Riobamba">
+    <meta property="og:description" content="Venta de iPhones, AirPods Pro 2 y accesorios. Entrega segura el mismo día en Riobamba.">
+    <meta property="og:image" content="https://i.ibb.co/P7dd253/image.png">
+    <meta property="og:site_name" content="ZonaRio">
+    
+    <!-- Scripts Externos -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+
     <style>
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        
+        body { 
+            font-family: 'Inter', -apple-system, sans-serif;
+            scroll-behavior: smooth;
         }
-        ::-webkit-scrollbar-track {
-            background: #1c1917; 
+        
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
-        ::-webkit-scrollbar-thumb {
-            background: #f97316; 
-            border-radius: 4px;
+
+        .insta-gradient {
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #ea580c; 
+
+        .product-shadow {
+            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
-        .hide-scroll {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+        
+        .product-shadow:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px -12px rgba(50, 50, 93, 0.15), 0 18px 36px -18px rgba(0, 0, 0, 0.2);
         }
-        .hide-scroll::-webkit-scrollbar {
+
+        .hero-gradient {
+            background: radial-gradient(circle at top right, #eff6ff, transparent);
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
             display: none;
-        }
-        /* Gradient Text */
-        .text-gradient {
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-image: linear-gradient(to right, #ef4444, #f97316, #eab308);
         }
     </style>
 </head>
-<body class="bg-brand-darker text-stone-300 font-sans antialiased">
+<body class="bg-white text-[#1d1d1f] antialiased selection:bg-blue-100">
 
-    <!-- Navbar -->
-    <nav class="fixed w-full z-40 top-0 bg-brand-darker/90 backdrop-blur-md border-b border-brand-gray transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex items-center gap-3">
-                    <i class="ph-fill ph-fire text-brand-orange text-4xl"></i>
-                    <div class="flex flex-col">
-                        <span class="font-display text-2xl tracking-wider text-white leading-none">LA CASA DE LOS</span>
-                        <span class="font-display text-3xl text-gradient leading-none tracking-widest">ASADOS</span>
-                    </div>
-                </div>
-                <div class="flex items-center gap-6">
-                    <a href="#menu" class="hidden md:block hover:text-brand-orange transition-colors font-medium">Ver Menú</a>
-                    <a href="#contacto" class="hidden md:block hover:text-brand-orange transition-colors font-medium">Contacto</a>
-                    <button onclick="toggleCart()" class="relative bg-brand-gray hover:bg-stone-700 p-3 rounded-full transition-colors flex items-center justify-center text-white">
-                        <i class="ph ph-shopping-cart text-xl"></i>
-                        <span id="cart-count" class="absolute -top-1 -right-1 bg-brand-red text-white text-xs font-bold px-2 py-0.5 rounded-full border-2 border-brand-darker">0</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <div id="root"></div>
 
-    <!-- Hero Section -->
-    <header class="relative pt-20 pb-16 md:pt-32 md:pb-24 overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=1920" alt="Asado" class="w-full h-full object-cover opacity-20">
-            <div class="absolute inset-0 bg-gradient-to-b from-brand-darker via-transparent to-brand-darker"></div>
-        </div>
-        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-12">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gray/50 border border-brand-orange/30 text-brand-orange mb-6 text-sm font-medium">
-                <i class="ph ph-music-notes"></i> Carnes a la Parrilla & Música en Vivo
-            </div>
-            <h1 class="font-display text-5xl md:text-7xl text-white mb-6 tracking-wide drop-shadow-lg">
-                EL MEJOR SABOR DE <br /> <span class="text-gradient">NUESTRA PARRILLA</span>
-            </h1>
-            <p class="text-lg md:text-xl text-stone-400 mb-10 max-w-2xl mx-auto">
-                Disfruta de los mejores cortes, parrilladas familiares y bebidas refrescantes. Haz tu pedido aquí y recíbelo donde estés.
-            </p>
-            <a href="#menu" class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-red to-brand-orange hover:from-brand-orange hover:to-brand-red text-white font-semibold px-8 py-4 rounded-full transition-all transform hover:scale-105 shadow-lg shadow-brand-orange/20">
-                <i class="ph ph-fork-knife text-xl"></i> Ver nuestro Menú
-            </a>
-        </div>
-    </header>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = window.Motion;
 
-    <!-- Menu Section -->
-    <main id="menu" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div class="text-center mb-12">
-            <h2 class="font-display text-4xl text-white mb-2">Nuestro Menú</h2>
-            <div class="w-24 h-1 bg-brand-orange mx-auto rounded-full"></div>
-        </div>
-
-        <!-- Categories Filter -->
-        <div class="flex overflow-x-auto hide-scroll gap-3 mb-10 pb-4 justify-start md:justify-center border-b border-brand-gray">
-            <button onclick="filterMenu('all')" class="category-btn active px-5 py-2 rounded-full bg-brand-orange text-white font-medium whitespace-nowrap transition-colors">Todos</button>
-            <button onclick="filterMenu('parrilladas')" class="category-btn px-5 py-2 rounded-full bg-brand-gray text-stone-300 hover:text-white whitespace-nowrap transition-colors">Parrilladas</button>
-            <button onclick="filterMenu('cortes')" class="category-btn px-5 py-2 rounded-full bg-brand-gray text-stone-300 hover:text-white whitespace-nowrap transition-colors">Cortes</button>
-            <button onclick="filterMenu('asados')" class="category-btn px-5 py-2 rounded-full bg-brand-gray text-stone-300 hover:text-white whitespace-nowrap transition-colors">Asados</button>
-            <button onclick="filterMenu('entradas')" class="category-btn px-5 py-2 rounded-full bg-brand-gray text-stone-300 hover:text-white whitespace-nowrap transition-colors">Entradas & Guarniciones</button>
-            <button onclick="filterMenu('bebidas')" class="category-btn px-5 py-2 rounded-full bg-brand-gray text-stone-300 hover:text-white whitespace-nowrap transition-colors">Bebidas</button>
-            <button onclick="filterMenu('cervezas_vinos')" class="category-btn px-5 py-2 rounded-full bg-brand-gray text-stone-300 hover:text-white whitespace-nowrap transition-colors">Licores</button>
-            <button onclick="filterMenu('sabados')" class="category-btn px-5 py-2 rounded-full bg-brand-gray text-stone-300 hover:text-white whitespace-nowrap transition-colors">Fines de Semana</button>
-        </div>
-
-        <!-- Menu Grid -->
-        <div id="menu-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Items injected via JS -->
-        </div>
-    </main>
-
-    <!-- Footer & Contact -->
-    <footer id="contacto" class="bg-brand-dark border-t border-brand-gray pt-16 pb-8 mt-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12 text-center md:text-left">
-                <!-- Brand -->
-                <div>
-                    <div class="flex items-center justify-center md:justify-start gap-2 mb-4">
-                        <i class="ph-fill ph-fire text-brand-orange text-3xl"></i>
-                        <span class="font-display text-2xl text-white tracking-widest">LA CASA DE LOS ASADOS</span>
-                    </div>
-                    <p class="text-stone-400 mb-6">Carnes a la parrilla y música en vivo. El mejor ambiente para compartir en familia y con amigos.</p>
-                </div>
-                <!-- Contact -->
-                <div>
-                    <h3 class="font-semibold text-white text-lg mb-4">Reservaciones y Pedidos</h3>
-                    <ul class="space-y-3 text-stone-400">
-                        <li class="flex items-center justify-center md:justify-start gap-3">
-                            <i class="ph-fill ph-whatsapp-logo text-green-500 text-xl"></i>
-                            <!-- Número actualizado aquí en el pie de página -->
-                            <a href="https://wa.me/593982862022" target="_blank" class="hover:text-white transition-colors">098 286 2022</a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- Delivery -->
-                <div>
-                    <h3 class="font-semibold text-white text-lg mb-4">Servicio a Domicilio</h3>
-                    <p class="text-stone-400 mb-4">Llegamos hasta la puerta de tu casa. Haz tu pedido a través de nuestro carrito o envíanos un mensaje directo.</p>
-                    <div class="flex items-center justify-center md:justify-start gap-2 text-brand-orange">
-                        <i class="ph-fill ph-moped text-3xl"></i>
-                        <span class="font-medium">Delivery Disponible</span>
-                    </div>
-                </div>
-            </div>
-            <div class="border-t border-stone-800 pt-8 text-center text-sm text-stone-500">
-                &copy; <span id="year"></span> La Casa de los Asados. Todos los derechos reservados.
-            </div>
-        </div>
-    </footer>
-
-    <!-- Cart Sidebar/Modal -->
-    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden transition-opacity opacity-0"></div>
-    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-brand-dark shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col border-l border-brand-gray">
-        <!-- Cart Header -->
-        <div class="p-6 border-b border-brand-gray flex justify-between items-center bg-brand-darker">
-            <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                <i class="ph ph-shopping-bag text-brand-orange text-2xl"></i> Tu Pedido
-            </h2>
-            <button onclick="toggleCart()" class="text-stone-400 hover:text-white p-2 bg-brand-gray rounded-full transition-colors flex items-center gap-1 pr-4">
-                <i class="ph ph-x text-xl"></i> <span class="text-sm font-medium">Cerrar</span>
-            </button>
-        </div>
-        
-        <!-- Cart Items -->
-        <div class="flex-1 overflow-y-auto p-6 relative">
-            <div id="empty-cart-msg" class="text-center text-stone-500 flex flex-col items-center justify-center h-full">
-                <i class="ph ph-shopping-cart-simple text-6xl text-stone-700 mb-4 block"></i>
-                Tu carrito está vacío.<br>¡Agrega algo delicioso!
-            </div>
-            <div id="cart-items" class="space-y-4">
-                <!-- Items injected via JS -->
-            </div>
-        </div>
-
-        <!-- Cart Footer -->
-        <div class="p-6 bg-brand-darker border-t border-brand-gray">
-            <div class="flex justify-between items-center mb-6 text-lg font-bold text-white">
-                <span>Total:</span>
-                <span id="cart-total" class="text-brand-orange text-2xl">$0.00</span>
-            </div>
-            <button onclick="sendWhatsAppOrder()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-4 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-green-900/50">
-                <i class="ph-fill ph-whatsapp-logo text-2xl"></i> Pedir por WhatsApp
-            </button>
-            <p class="text-xs text-stone-500 text-center mt-3">Serás redirigido a WhatsApp para confirmar.</p>
-        </div>
-    </div>
-
-    <!-- JavaScript Logic -->
-    <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        // Menu Data representing ALL items from the image
-        const menuData = [
-            // PARRILLADAS
-            { id: 'p1', name: 'Parrillada Personal', price: 8.00, category: 'parrilladas', desc: 'Chuleta de cerdo, chorizo paisa, chorizo español, choclo, papas, ensalada, salsas.', imgType: 'grill' },
-            { id: 'p2', name: 'Parrillada Especial', price: 10.00, category: 'parrilladas', desc: 'Chuleta de cerdo, filete de pollo, chorizo paisa, chorizo español, choclo, papa cocinada, ensalada, salsas.', imgType: 'grill' },
-            { id: 'p3', name: 'Parrillada Completa', price: 15.00, category: 'parrilladas', desc: 'Chuleta de cerdo, filete de pollo, filete de ternera, chorizo paisa, chorizo español, morcilla negra, choclo, papas, ensalada, salsas.', imgType: 'grill' },
-            { id: 'p4', name: 'Parrillada Familiar', price: 25.00, category: 'parrilladas', desc: '2 Chuletas, 2 filetes de pollo, 2 filetes de ternera, 2 chorizos paisa, 2 españoles, 2 morcillas, 2 choclos, papas, ensalada, salsas.', imgType: 'grill' },
-            
-            // CORTES
-            { id: 'c1', name: 'Picana', price: 12.00, category: 'cortes', desc: 'Incluye: Papa campestre o papa frita, ensalada, salsas.', imgType: 'steak' },
-            { id: 'c2', name: 'T-Bone', price: 12.00, category: 'cortes', desc: 'Incluye: Papa campestre o papa frita, ensalada, salsas.', imgType: 'steak' },
-            { id: 'c3', name: 'Ribeye', price: 12.00, category: 'cortes', desc: 'Incluye: Papa campestre o papa frita, ensalada, salsas.', imgType: 'steak' },
-            { id: 'c4', name: 'Tomahawk', price: 18.00, category: 'cortes', desc: 'Incluye: Papa campestre o papa frita, ensalada, salsas.', imgType: 'steak' },
-            { id: 'c5', name: 'Matambre de Cerdo', price: 12.00, category: 'cortes', desc: 'Incluye: Papa campestre o papa frita, ensalada, salsas.', imgType: 'pork' },
-            { id: 'c6', name: 'Bife de Chorizo', price: 12.00, category: 'cortes', desc: 'Incluye: Papa campestre o papa frita, ensalada, salsas.', imgType: 'steak' },
-
-            // ASADOS
-            { id: 'a1', name: 'Asado con Chuleta de Cerdo', price: 6.00, category: 'asados', desc: 'Incluye: Papa campestre o frita, ensalada, salsas.', imgType: 'pork' },
-            { id: 'a2', name: 'Asado con Filete de Pollo', price: 6.00, category: 'asados', desc: 'Incluye: Papa campestre o frita, ensalada, salsas.', imgType: 'chicken' },
-            { id: 'a3', name: 'Asado con Costillas de Cerdo', price: 6.00, category: 'asados', desc: 'Incluye: Papa campestre o frita, ensalada, salsas.', imgType: 'ribs' },
-            { id: 'a4', name: 'Asado con Filete de Ternera', price: 6.00, category: 'asados', desc: 'Incluye: Papa campestre o frita, ensalada, salsas.', imgType: 'steak' },
-            { id: 'a5', name: 'Asado Mixto', price: 8.00, category: 'asados', desc: 'Porciones de chuleta, pollo y ternera. Incluye: papas, ensalada, salsas.', imgType: 'grill' },
-
-            // ENTRADAS Y PORCIONES
-            { id: 'e1', name: 'Picada de Embutidos', price: 8.00, category: 'entradas', desc: 'Selección de nuestros mejores embutidos a la parrilla.', imgType: 'sausage' },
-            { id: 'e2', name: 'Pan de Ajo', price: 2.00, category: 'entradas', desc: 'Crujiente pan baguette con mantequilla de ajo y hierbas.', imgType: 'bread' },
-            { id: 'po1', name: 'Ensalada', price: 1.50, category: 'entradas', desc: 'Porción extra de ensalada fresca.', imgType: 'salad' },
-            { id: 'po2', name: 'Papa Frita', price: 2.00, category: 'entradas', desc: 'Porción extra de papas fritas.', imgType: 'fries' },
-            { id: 'po3', name: 'Choclo', price: 1.50, category: 'entradas', desc: 'Porción extra de choclo tierno.', imgType: 'corn' },
-            { id: 'po4', name: 'Porción de Papa Campestre', price: 2.00, category: 'entradas', desc: 'Papas rústicas condimentadas.', imgType: 'fries' },
-
-            // SABADOS Y DOMINGOS (Sopas)
-            { id: 's1', name: 'Caldo de Gallina', price: 5.00, category: 'sabados', desc: 'Tradicional caldo de gallina criolla. (Precio referencial)', imgType: 'soup' },
-            { id: 's2', name: 'Caldo de Pata', price: 5.00, category: 'sabados', desc: 'Plato tradicional ecuatoriano. (Precio referencial)', imgType: 'soup' },
-            { id: 's3', name: 'Yahuarlocro', price: 5.00, category: 'sabados', desc: 'Exquisita sopa tradicional. (Precio referencial)', imgType: 'soup' },
-
-            // BEBIDAS (Calientes, Jugos)
-            { id: 'b1', name: 'Café', price: 1.00, category: 'bebidas', desc: 'Café caliente recién pasado.', imgType: 'coffee' },
-            { id: 'b2', name: 'Aguas Aromáticas', price: 1.00, category: 'bebidas', desc: 'Infusión de hierbas naturales.', imgType: 'tea' },
-            { id: 'b3', name: 'Té de la Casa', price: 1.50, category: 'bebidas', desc: 'Té especial de la casa (Vaso).', imgType: 'tea' },
-            { id: 'b4', name: 'Jarra de Té de la Casa', price: 6.00, category: 'bebidas', desc: 'Té especial de la casa (Jarra).', imgType: 'juice_pitcher' },
-            { id: 'b5', name: 'Limonada', price: 1.50, category: 'bebidas', desc: 'Limonada fresca (Vaso).', imgType: 'juice' },
-            { id: 'b6', name: 'Jarra de Limonada', price: 6.00, category: 'bebidas', desc: 'Limonada fresca (Jarra).', imgType: 'juice_pitcher' },
-            { id: 'b7', name: 'Fresa / Limón', price: 1.50, category: 'bebidas', desc: 'Refrescante mezcla de fresa y limón (Vaso).', imgType: 'juice' },
-            { id: 'b8', name: 'Jarra de Fresa Limón', price: 6.00, category: 'bebidas', desc: 'Mezcla de fresa y limón (Jarra).', imgType: 'juice_pitcher' },
-            { id: 'b9', name: 'Jugo de Naranja', price: 2.00, category: 'bebidas', desc: 'Zumo de naranja natural (Vaso).', imgType: 'juice' },
-            { id: 'b10', name: 'Jarra de Jugo de Naranja', price: 8.00, category: 'bebidas', desc: 'Zumo natural (Jarra).', imgType: 'juice_pitcher' },
-            { id: 'b11', name: 'Jugos Varios (Vaso)', price: 1.75, category: 'bebidas', desc: 'Tomate, Mora, Piña, Guanábana, Tamarindo o Frutilla. (Especifique sabor al pedir).', imgType: 'juice' },
-            { id: 'b12', name: 'Jarra de Jugos Varios', price: 7.00, category: 'bebidas', desc: 'Mora, Tomate, Piña, Guanábana, Tamarindo o Frutilla. (Especifique sabor).', imgType: 'juice_pitcher' },
-
-            // BATIDOS
-            { id: 'ba1', name: 'Batido de Tomate', price: 2.00, category: 'bebidas', desc: 'Batido en leche.', imgType: 'shake' },
-            { id: 'ba2', name: 'Batido de Mora', price: 2.00, category: 'bebidas', desc: 'Batido en leche.', imgType: 'shake' },
-            { id: 'ba3', name: 'Batido de Guanábana', price: 2.00, category: 'bebidas', desc: 'Batido en leche.', imgType: 'shake' },
-
-            // GASEOSAS
-            { id: 'g1', name: 'Coca Cola', price: 1.00, category: 'bebidas', desc: 'Bebida gaseosa.', imgType: 'soda' },
-            { id: 'g2', name: 'Fanta', price: 1.00, category: 'bebidas', desc: 'Bebida gaseosa.', imgType: 'soda' },
-            { id: 'g3', name: 'Sprite', price: 1.00, category: 'bebidas', desc: 'Bebida gaseosa.', imgType: 'soda' },
-            { id: 'g4', name: 'Guitig', price: 2.00, category: 'bebidas', desc: 'Agua mineral.', imgType: 'water' },
-            { id: 'g5', name: 'Agua Mineral Sin Gas', price: 1.00, category: 'bebidas', desc: 'Botella de agua natural.', imgType: 'water' },
-            { id: 'g6', name: 'Fuzze Tea', price: 1.00, category: 'bebidas', desc: 'Té helado.', imgType: 'soda' },
-            { id: 'g7', name: 'Agua Imperial Con Gas', price: 1.00, category: 'bebidas', desc: 'Agua gasificada.', imgType: 'water' },
-
-            // POSTRES
-            { id: 'po5', name: 'Cheesecake de Maracuyá', price: 2.50, category: 'entradas', desc: 'Delicioso postre dulce y cítrico.', imgType: 'dessert' },
-            { id: 'po6', name: 'Cheesecake de Oreo', price: 2.50, category: 'entradas', desc: 'Postre frío con galleta Oreo.', imgType: 'dessert' },
-            { id: 'po7', name: 'Tiramisú', price: 4.00, category: 'entradas', desc: 'Postre italiano con sabor a café.', imgType: 'dessert' },
-
-            // VINOS Y CERVEZAS
-            { id: 'v1', name: 'Vino Tinto Semi-Seco (Casa)', price: 10.00, category: 'cervezas_vinos', desc: 'Botella.', imgType: 'wine' },
-            { id: 'v2', name: 'Vino Blanco de la Casa', price: 10.00, category: 'cervezas_vinos', desc: 'Botella.', imgType: 'wine' },
-            { id: 'v3', name: 'Champagne Grand Duval', price: 10.00, category: 'cervezas_vinos', desc: 'Botella para celebrar.', imgType: 'wine' },
-            { id: 'v4', name: 'Copa de Vino de la Casa', price: 3.50, category: 'cervezas_vinos', desc: 'Copa individual.', imgType: 'wine' },
-            { id: 'v5', name: 'Copa de Sangría', price: 5.00, category: 'cervezas_vinos', desc: 'Copa refrescante.', imgType: 'wine' },
-            { id: 'v6', name: 'Jarra de Sangría', price: 16.00, category: 'cervezas_vinos', desc: 'Para compartir.', imgType: 'wine_pitcher' },
-            
-            { id: 'ce1', name: 'Cerveza Corona', price: 3.00, category: 'cervezas_vinos', desc: 'Botella.', imgType: 'beer' },
-            { id: 'ce2', name: 'Cerveza Heineken', price: 3.00, category: 'cervezas_vinos', desc: 'Botella.', imgType: 'beer' },
-            { id: 'ce3', name: 'Cerveza Modelo', price: 3.00, category: 'cervezas_vinos', desc: 'Botella.', imgType: 'beer' },
-            { id: 'ce4', name: 'Cerveza Stella', price: 3.00, category: 'cervezas_vinos', desc: 'Botella.', imgType: 'beer' },
-            { id: 'ce5', name: 'Cerveza Club', price: 2.50, category: 'cervezas_vinos', desc: 'Cerveza Nacional.', imgType: 'beer' },
-        ];
-
-        // Mapping image types to generic high-quality placeholders
-        const imageLibrary = {
-            'grill': 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&q=80&w=400',
-            'steak': 'https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&q=80&w=400',
-            'pork': 'https://images.unsplash.com/photo-1628294895950-9805252327bc?auto=format&fit=crop&q=80&w=400',
-            'chicken': 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&q=80&w=400',
-            'ribs': 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=400',
-            'sausage': 'https://images.unsplash.com/photo-1603569283847-aa295f0d016a?auto=format&fit=crop&q=80&w=400',
-            'bread': 'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?auto=format&fit=crop&q=80&w=400',
-            'salad': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=400',
-            'fries': 'https://images.unsplash.com/photo-1576107232684-1279f3908594?auto=format&fit=crop&q=80&w=400',
-            'corn': 'https://images.unsplash.com/photo-1599813292418-5a41a4a169b1?auto=format&fit=crop&q=80&w=400',
-            'soup': 'https://images.unsplash.com/photo-1548943487-a2e4f43b4851?auto=format&fit=crop&q=80&w=400',
-            'coffee': 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&q=80&w=400',
-            'tea': 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&q=80&w=400',
-            'juice': 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&q=80&w=400',
-            'juice_pitcher': 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=80&w=400',
-            'shake': 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&q=80&w=400',
-            'soda': 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&q=80&w=400',
-            'water': 'https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&q=80&w=400',
-            'dessert': 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&q=80&w=400',
-            'wine': 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&q=80&w=400',
-            'wine_pitcher': 'https://images.unsplash.com/photo-1551529834-525807d6b4f3?auto=format&fit=crop&q=80&w=400',
-            'beer': 'https://images.unsplash.com/photo-1614316942973-206ec6df0608?auto=format&fit=crop&q=80&w=400'
+        // ============================================================
+        // 1. CONFIGURACIÓN DE IMÁGENES Y REDES
+        // ============================================================
+        const URL_IMAGENES = {
+            inicio: "https://i.ibb.co/P7dd253/image.png", 
+            iphone: "https://i.ibb.co/zzT8WWZ/1019f617477997c0f29f3282e440e16e.jpg", 
+            airpods: "https://i.ibb.co/hFSmq5K6/image.png", 
+            estuches: "https://i.ibb.co/gM0JhRxW/image.png" 
         };
 
-        // State
-        let cart = [];
-        
-        // AQUÍ ESTÁ EL NÚMERO ACTUALIZADO
-        const waNumber = "593982862022"; 
+        const REDES_SOCIALES = {
+            instagram: "https://www.instagram.com/_zonario_/",
+            facebook: "https://www.facebook.com/share/18K4RG3mHE/?mibextid=wwXIfr", 
+            tiktok: "https://www.tiktok.com/@_zonario_?is_from_webapp=1&sender_device=pc"      
+        };
 
-        // Initialize Menu
-        function initMenu() {
-            filterMenu('all');
-            updateCartUI();
-        }
+        const WHATSAPP_NUMBERS = [
+            { label: "Ventas 1", number: "+593 98 092 6777" },
+            { label: "Ventas 2", number: "+593 98 286 2022" }
+        ];
 
-        // Render Menu Cards
-        function renderMenuItems(items) {
-            const container = document.getElementById('menu-container');
-            container.innerHTML = '';
+        // ============================================================
+        // 1.5. INVENTARIO CENTRALIZADO
+        // ============================================================
+        const INVENTARIO = [
+            {
+                id: 'iph15',
+                categoria: 'iphones',
+                title: "iPhone 15",
+                tag: "Stock Actual",
+                price: "Consultar Precio",
+                desc: "128GB / 97% de batería. Condición impecable, probado y garantizado. (Mica protectora y estuche ya incluidos).",
+                img: URL_IMAGENES.iphone,
+                highlight: true,
+                stock: 1 // Solo el iPhone maneja el límite visual y de carrito
+            },
+            {
+                id: 'airp2',
+                categoria: 'accesorios',
+                title: "AirPods Pro 2",
+                tag: "Audio Premium",
+                price: "Oferta",
+                desc: "Cancelación activa de ruido, sonido espacial y estuche MagSafe USB-C.",
+                img: URL_IMAGENES.airpods,
+                highlight: true
+                // Sin límite de stock para accesorios
+            },
+            {
+                id: 'estlis',
+                categoria: 'accesorios',
+                title: "Estuches Lisos Pro 2",
+                tag: "Accesorios",
+                price: "Oferta",
+                desc: "Protección premium de silicona suave para tus AirPods. Disponibles en varios colores.",
+                img: URL_IMAGENES.estuches,
+                highlight: false
+                // Sin límite de stock para accesorios
+            }
+        ];
+
+        // --- ICONOS ---
+        const Icon = ({ name, className = "w-6 h-6" }) => {
+            const icons = {
+                apple: <svg viewBox="0 0 24 24" fill="currentColor" className={className}><path d="M17.057 12.872c.023 2.56 2.127 3.41 2.152 3.424-.017.06-.337 1.15-1.107 2.274-.666.969-1.357 1.933-2.44 1.954-1.066.02-1.408-.626-2.628-.626-1.218 0-1.597.606-2.61.646-1.063.037-1.854-1.04-2.524-2.008-1.371-1.98-2.42-5.592-1.01-8.03 1.054-1.815 2.91-2.96 4.914-2.99 1.523-.02 2.96 1.03 3.89 1.03.932 0 2.662-1.26 4.475-1.076 1.038.044 3.96.417 5.836 3.16-.145.09-3.412 1.99-3.376 5.89zM15.426 3.32c.813-1.002 1.356-2.392 1.205-3.32-.8.03-1.768.535-2.343 1.21-.514.596-.963 2.016-.84 2.923.894.07 1.79-.473 2.378-1.127z"/></svg>,
+                whatsapp: <svg viewBox="0 0 24 24" fill="currentColor" className={className}><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>,
+                instagram: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>,
+                facebook: <svg viewBox="0 0 24 24" fill="currentColor" className={className}><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>,
+                tiktok: <svg viewBox="0 0 24 24" fill="currentColor" className={className}><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"></path></svg>,
+                shield: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>,
+                map: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>,
+                close: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>,
+                bag: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>,
+                plus: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>,
+                minus: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="5" y1="12" x2="19" y2="12"></line></svg>,
+                trash: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            };
+            return icons[name] || null;
+        };
+
+        // --- COMPONENTE MODAL DE CONTACTO / WHATSAPP ---
+        const ContactModal = ({ isOpen, onClose, cart = [] }) => {
+            if (!isOpen) return null;
             
-            items.forEach(item => {
-                const imgUrl = imageLibrary[item.imgType] || imageLibrary['grill'];
-                const card = document.createElement('div');
-                card.className = 'bg-brand-gray border border-stone-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-brand-orange/10 hover:border-brand-orange/50 transition-all duration-300 group flex flex-col h-full';
-                card.innerHTML = `
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="${imgUrl}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-brand-gray to-transparent"></div>
-                        <div class="absolute bottom-3 right-3 bg-brand-darker/80 backdrop-blur-sm px-3 py-1 rounded-lg font-bold text-brand-orange border border-brand-orange/30">
-                            $${item.price.toFixed(2)}
+            const generateMessage = () => {
+                if (cart.length === 0) return "Hola ZonaRio, me gustaría solicitar más información.";
+                
+                let msg = "Hola ZonaRio, me interesan los siguientes productos:%0A%0A";
+                cart.forEach(item => {
+                    msg += `• ${item.quantity}x ${item.title}%0A`;
+                });
+                msg += "%0A¿Me ayudan con la disponibilidad y total a pagar?";
+                return msg;
+            };
+
+            return (
+                <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-black/40 backdrop-blur-sm">
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="bg-white w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden"
+                    >
+                        <button onClick={onClose} className="absolute top-6 right-6 text-gray-400 hover:text-black">
+                            <Icon name="close" />
+                        </button>
+                        <div className="text-center mb-8">
+                            <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <Icon name="whatsapp" className="w-8 h-8" />
+                            </div>
+                            <h3 className="text-xl font-extrabold tracking-tight">Completar Pedido</h3>
+                            <p className="text-sm text-gray-400 mt-2">Selecciona uno de nuestros números para enviar tu pedido a Riobamba.</p>
                         </div>
+                        <div className="space-y-3">
+                            {WHATSAPP_NUMBERS.map((contact, idx) => (
+                                <a 
+                                    key={idx}
+                                    href={`https://wa.me/${contact.number.replace(/\s+/g, '').replace(/\+/g, '')}?text=${generateMessage()}`}
+                                    target="_blank"
+                                    onClick={onClose}
+                                    className="flex items-center justify-between p-4 bg-gray-50 hover:bg-green-50 rounded-2xl transition-colors group"
+                                >
+                                    <div className="flex flex-col">
+                                        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">{contact.label}</span>
+                                        <span className="text-lg font-bold text-black">{contact.number}</span>
+                                    </div>
+                                    <div className="bg-white p-2 rounded-full shadow-sm group-hover:bg-green-600 group-hover:text-white transition-colors">
+                                        <Icon name="whatsapp" className="w-5 h-5" />
+                                    </div>
+                                </a>
+                            ))}
+                        </div>
+                    </motion.div>
+                </div>
+            );
+        };
+
+        // --- CONTENIDO DE INFORMACIÓN (GARANTÍA, ENVÍOS, SOPORTE) ---
+        const INFO_CONTENT = {
+            garantia: {
+                title: "Garantía ZonaRio",
+                content: (
+                    <div className="space-y-3">
+                        <p>Todos nuestros equipos pasan por un estricto proceso de revisión técnica antes de ser entregados.</p>
+                        <p>Ofrecemos <strong>garantía de funcionamiento real</strong> para que tu inversión esté segura. Si el equipo presenta algún defecto de fábrica, lo revisamos y te damos una solución inmediata.</p>
+                        <p className="text-xs text-gray-400 mt-4">* La garantía no cubre daños por caídas, humedad o mal uso.</p>
                     </div>
-                    <div class="p-5 flex-1 flex flex-col">
-                        <h3 class="text-xl font-bold text-white mb-2 leading-tight">${item.name}</h3>
-                        <p class="text-sm text-stone-400 mb-6 flex-1">${item.desc}</p>
-                        <button onclick="addToCart(event, '${item.id}')" class="w-full bg-stone-800 hover:bg-brand-orange text-white font-medium py-3 rounded-xl transition-colors flex items-center justify-center gap-2 group-hover:bg-brand-orange">
-                            <i class="ph ph-plus-circle text-lg"></i> Agregar al Pedido
+                )
+            },
+            envios: {
+                title: "Envíos y Entregas",
+                content: (
+                    <div className="space-y-3">
+                        <p>Para tu total seguridad y tranquilidad, realizamos <strong>entregas personales en Riobamba</strong>.</p>
+                        <p>Nos reunimos en puntos céntricos y seguros (como Paseo Shopping o zonas bancarias) para que puedas revisar tu equipo con calma antes de realizar el pago.</p>
+                        <p className="font-bold text-black mt-2">¡Pagas únicamente cuando tienes el equipo en tus manos!</p>
+                    </div>
+                )
+            },
+            soporte: {
+                title: "Soporte Técnico",
+                content: (
+                    <div className="space-y-3">
+                        <p>¿Tienes dudas sobre cómo usar tu nuevo iPhone o cómo configurar tus AirPods?</p>
+                        <p>Nuestro equipo está listo para ayudarte en todo momento. Ofrecemos asistencia post-venta para nuestros clientes, para que le saques el máximo provecho a tu tecnología Apple.</p>
+                    </div>
+                )
+            }
+        };
+
+        // --- COMPONENTE MODAL DE INFORMACIÓN ---
+        const InfoModal = ({ isOpen, onClose, type, onContact }) => {
+            if (!isOpen || !type || !INFO_CONTENT[type]) return null;
+            
+            const info = INFO_CONTENT[type];
+
+            return (
+                <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-black/40 backdrop-blur-sm">
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="bg-white w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden"
+                    >
+                        <button onClick={onClose} className="absolute top-6 right-6 text-gray-400 hover:text-black">
+                            <Icon name="close" />
+                        </button>
+                        
+                        <h3 className="text-2xl font-extrabold tracking-tight mb-6">{info.title}</h3>
+                        
+                        <div className="text-gray-500 text-sm leading-relaxed mb-8">
+                            {info.content}
+                        </div>
+                        
+                        <div className="flex flex-col gap-3">
+                            <button 
+                                onClick={() => { onClose(); onContact(); }}
+                                className="w-full bg-black text-white py-4 rounded-full font-bold hover:bg-gray-800 transition-all shadow-xl flex justify-center items-center gap-2"
+                            >
+                                Hablar con un asesor <Icon name="whatsapp" className="w-5 h-5" />
+                            </button>
+                            <button 
+                                onClick={onClose}
+                                className="w-full bg-gray-100 text-gray-500 py-4 rounded-full font-bold hover:bg-gray-200 transition-all"
+                            >
+                                Entendido
+                            </button>
+                        </div>
+                    </motion.div>
+                </div>
+            );
+        };
+
+        // --- COMPONENTE CARRITO LATERAL (DRAWER) ---
+        const CartDrawer = ({ isOpen, onClose, cart, updateQuantity, removeFromCart, onCheckout }) => {
+            if (!isOpen) return null;
+            
+            return (
+                <div className="fixed inset-0 z-[150] flex justify-end">
+                    <motion.div 
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                        onClick={onClose}
+                        className="absolute inset-0 bg-black/30 backdrop-blur-sm cursor-pointer"
+                    ></motion.div>
+                    
+                    <motion.div 
+                        initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
+                        transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                        className="w-full max-w-md bg-white h-full shadow-2xl relative z-10 flex flex-col"
+                    >
+                        <div className="p-6 border-b flex justify-between items-center bg-gray-50">
+                            <h2 className="text-2xl font-black tracking-tight flex items-center gap-2">
+                                <Icon name="bag" className="w-6 h-6" /> Tu Pedido
+                            </h2>
+                            <button onClick={onClose} className="p-2 bg-white rounded-full shadow-sm hover:bg-gray-100 text-gray-500">
+                                <Icon name="close" />
+                            </button>
+                        </div>
+
+                        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                            {cart.length === 0 ? (
+                                <div className="h-full flex flex-col items-center justify-center text-gray-400 space-y-4">
+                                    <Icon name="bag" className="w-16 h-16 opacity-20" />
+                                    <p className="font-medium text-lg">Tu carrito está vacío</p>
+                                </div>
+                            ) : (
+                                cart.map((item, idx) => (
+                                    <div key={idx} className="flex gap-4 items-center bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
+                                        <img src={item.img} className="w-20 h-20 object-contain bg-gray-50 rounded-xl p-2" />
+                                        <div className="flex-1">
+                                            <h4 className="font-bold text-gray-900 leading-tight">{item.title}</h4>
+                                            <p className="text-blue-600 text-sm font-bold mt-1">{item.price}</p>
+                                            
+                                            <div className="flex items-center gap-4 mt-3">
+                                                <div className="flex items-center bg-gray-100 rounded-full px-2 py-1">
+                                                    <button onClick={() => updateQuantity(item.title, -1)} className="p-1 hover:text-blue-600 transition-colors"><Icon name="minus" className="w-4 h-4"/></button>
+                                                    <span className="w-6 text-center font-bold text-sm">{item.quantity}</span>
+                                                    <button onClick={() => updateQuantity(item.title, 1)} className="p-1 hover:text-blue-600 transition-colors"><Icon name="plus" className="w-4 h-4"/></button>
+                                                </div>
+                                                <button onClick={() => removeFromCart(item.title)} className="text-gray-400 hover:text-red-500 transition-colors p-1">
+                                                    <Icon name="trash" className="w-5 h-5"/>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+
+                        <div className="p-6 border-t bg-gray-50">
+                            <button 
+                                disabled={cart.length === 0}
+                                onClick={onCheckout}
+                                className="w-full bg-black text-white py-4 rounded-full font-bold text-lg hover:bg-gray-800 transition-all shadow-xl disabled:opacity-50 flex justify-center items-center gap-2"
+                            >
+                                Completar por WhatsApp <Icon name="whatsapp" className="w-5 h-5" />
+                            </button>
+                            <p className="text-center text-xs text-gray-400 mt-4 font-medium">Pago contra entrega en Riobamba</p>
+                        </div>
+                    </motion.div>
+                </div>
+            );
+        };
+
+        // --- COMPONENTE TARJETA DE PRODUCTO DINÁMICA ---
+        const ProductCard = ({ title, tag, price, img, desc, highlight = false, stock, onAdd }) => {
+            const isUltimaUnidad = stock === 1;
+
+            let displayTag = isUltimaUnidad ? "¡Última Unidad!" : tag;
+            let tagClasses = highlight ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-500';
+            
+            if (isUltimaUnidad) {
+                tagClasses = "bg-orange-100 text-orange-600 animate-pulse";
+            }
+
+            return (
+                <motion.div 
+                    whileHover={{ y: -8 }}
+                    className={`product-shadow bg-white p-8 rounded-[2.5rem] border flex flex-col relative overflow-hidden ${highlight ? 'border-blue-200 ring-4 ring-blue-50' : 'border-gray-100'}`}
+                >
+                    <div className="flex justify-between items-start mb-6 relative z-10">
+                        <span className={`text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-tighter ${tagClasses}`}>
+                            {displayTag}
+                        </span>
+                        {highlight && <span className="text-blue-600"><Icon name="apple" className="w-5 h-5" /></span>}
+                    </div>
+                    
+                    <div className="h-48 flex items-center justify-center mb-8 relative z-10">
+                        <img src={img} alt={title} className="max-h-full object-contain filter drop-shadow-xl" />
+                    </div>
+                    
+                    <h3 className="text-xl font-bold text-gray-900 mb-2 relative z-10">{title}</h3>
+                    <p className="text-sm text-gray-400 leading-relaxed mb-6 flex-grow relative z-10">{desc}</p>
+                    
+                    <div className="pt-6 border-t border-gray-50 flex items-center justify-between relative z-10">
+                        <div>
+                            <p className="text-xs text-gray-400 font-medium">Precio Especial</p>
+                            <p className="text-xl font-black text-blue-600">{price}</p>
+                        </div>
+                        <button 
+                            onClick={() => onAdd({ title, price, img })}
+                            className="bg-black text-white hover:bg-blue-600 shadow-lg p-4 rounded-full transition-colors flex items-center gap-2"
+                            title="Añadir al carrito"
+                        >
+                            <Icon name="bag" className="w-5 h-5" />
                         </button>
                     </div>
-                `;
-                container.appendChild(card);
-            });
-        }
+                </motion.div>
+            );
+        };
 
-        // Filter Menu functionality
-        function filterMenu(category) {
-            // Update active button styling
-            const buttons = document.querySelectorAll('.category-btn');
-            buttons.forEach(btn => {
-                if (btn.innerText.toLowerCase().includes(category) || 
-                   (category === 'all' && btn.innerText === 'Todos') ||
-                   (category === 'entradas' && btn.innerText.includes('Entradas')) ||
-                   (category === 'cervezas_vinos' && btn.innerText.includes('Licores')) ||
-                   (category === 'sabados' && btn.innerText.includes('Fines'))) {
-                    btn.classList.remove('bg-brand-gray', 'text-stone-300');
-                    btn.classList.add('bg-brand-orange', 'text-white');
-                } else {
-                    btn.classList.add('bg-brand-gray', 'text-stone-300');
-                    btn.classList.remove('bg-brand-orange', 'text-white');
-                }
-            });
+        function App() {
+            const [scrolled, setScrolled] = useState(false);
+            const [activeTab, setActiveTab] = useState('iphones');
+            const [modalOpen, setModalOpen] = useState(false);
+            const [cartOpen, setCartOpen] = useState(false);
+            const [cart, setCart] = useState([]);
+            const [infoType, setInfoType] = useState(null); // Nuevo estado para controlar qué texto de información mostrar
 
-            // Filter items
-            let filtered = menuData;
-            if (category !== 'all') {
-                filtered = menuData.filter(item => item.category === category);
-            }
-            renderMenuItems(filtered);
-        }
+            useEffect(() => {
+                const handleScroll = () => setScrolled(window.scrollY > 20);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
 
-        // Cart Functions
-        function toggleCart() {
-            const sidebar = document.getElementById('cart-sidebar');
-            const overlay = document.getElementById('cart-overlay');
-            
-            if (sidebar.classList.contains('translate-x-full')) {
-                // Open
-                sidebar.classList.remove('translate-x-full');
-                sidebar.classList.add('translate-x-0');
-                overlay.classList.remove('hidden');
-                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
-            } else {
-                // Close
-                sidebar.classList.remove('translate-x-0');
-                sidebar.classList.add('translate-x-full');
-                overlay.classList.add('opacity-0');
-                setTimeout(() => overlay.classList.add('hidden'), 300);
-            }
-        }
+            const addToCart = (product) => {
+                setCart(prev => {
+                    const existing = prev.find(item => item.title === product.title);
+                    
+                    // Verificamos si hay un límite para no pasarnos directamente al añadir
+                    const productoMaestro = INVENTARIO.find(p => p.title === product.title);
+                    const limiteStock = (productoMaestro && productoMaestro.stock !== undefined) ? productoMaestro.stock : 99;
 
-        function addToCart(event, id) {
-            const item = menuData.find(i => i.id === id);
-            if (!item) return;
+                    if (existing) {
+                        if (existing.quantity >= limiteStock) return prev; // No añadir si ya superó el límite
+                        return prev.map(item => item.title === product.title ? { ...item, quantity: item.quantity + 1 } : item);
+                    }
+                    return [...prev, { ...product, quantity: 1 }];
+                });
+                setCartOpen(true);
+            };
 
-            const existing = cart.find(i => i.id === id);
-            if (existing) {
-                existing.quantity += 1;
-            } else {
-                cart.push({ ...item, quantity: 1 });
-            }
-            
-            // Visual feedback
-            const btn = event.currentTarget || event.target;
-            const ogText = btn.innerHTML;
-            btn.innerHTML = `<i class="ph-fill ph-check-circle"></i> ¡Agregado!`;
-            btn.classList.add('bg-green-600');
-            btn.classList.remove('bg-stone-800', 'hover:bg-brand-orange');
-            
-            setTimeout(() => {
-                btn.innerHTML = ogText;
-                btn.classList.remove('bg-green-600');
-                btn.classList.add('bg-stone-800', 'hover:bg-brand-orange');
-            }, 1000);
+            const removeFromCart = (title) => {
+                setCart(prev => prev.filter(item => item.title !== title));
+            };
 
-            updateCartUI();
-        }
+            const updateQuantity = (title, delta) => {
+                setCart(prev => prev.map(item => {
+                    if (item.title === title) {
+                        const productoMaestro = INVENTARIO.find(p => p.title === title);
+                        const limiteStock = (productoMaestro && productoMaestro.stock !== undefined) 
+                            ? productoMaestro.stock 
+                            : 99;
+                        
+                        const newQuantity = Math.min(Math.max(1, item.quantity + delta), limiteStock);
+                        return { ...item, quantity: newQuantity };
+                    }
+                    return item;
+                }));
+            };
 
-        function updateQuantity(id, change) {
-            const index = cart.findIndex(i => i.id === id);
-            if (index !== -1) {
-                cart[index].quantity += change;
-                if (cart[index].quantity <= 0) {
-                    cart.splice(index, 1);
-                }
-                updateCartUI();
-            }
-        }
+            const cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0);
 
-        function updateCartUI() {
-            const container = document.getElementById('cart-items');
-            const emptyMsg = document.getElementById('empty-cart-msg');
-            const countBadge = document.getElementById('cart-count');
-            const totalEl = document.getElementById('cart-total');
+            const handleCheckout = () => {
+                setCartOpen(false);
+                setModalOpen(true);
+            };
 
-            container.innerHTML = '';
-            
-            if (cart.length === 0) {
-                emptyMsg.classList.remove('hidden');
-                countBadge.innerText = '0';
-                totalEl.innerText = '$0.00';
-                return;
-            }
+            return (
+                <div className="min-h-screen bg-white">
+                    {/* Modales */}
+                    <ContactModal isOpen={modalOpen} onClose={() => setModalOpen(false)} cart={cart} />
+                    <InfoModal isOpen={!!infoType} onClose={() => setInfoType(null)} type={infoType} onContact={() => setModalOpen(true)} />
+                    <AnimatePresence>
+                        {cartOpen && (
+                            <CartDrawer 
+                                isOpen={cartOpen} 
+                                onClose={() => setCartOpen(false)} 
+                                cart={cart} 
+                                updateQuantity={updateQuantity}
+                                removeFromCart={removeFromCart}
+                                onCheckout={handleCheckout}
+                            />
+                        )}
+                    </AnimatePresence>
 
-            emptyMsg.classList.add('hidden');
-            let total = 0;
-            let count = 0;
+                    {/* NAV */}
+                    <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'glass-nav py-3 shadow-sm' : 'py-6 bg-transparent'}`}>
+                        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+                            <div className="flex items-center space-x-2">
+                                <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black italic shadow-lg">ZR</div>
+                                <span className="font-extrabold text-xl tracking-tighter hidden sm:block text-black">ZonaRio</span>
+                            </div>
+                            
+                            <div className="flex items-center space-x-4 bg-gray-100/50 sm:bg-transparent p-1 sm:p-0 rounded-full">
+                                <a href="#store" className="text-[11px] sm:text-xs font-bold uppercase tracking-widest px-4 py-2 hover:text-blue-600 transition-colors">Catálogo</a>
+                                <a href="#trust" className="text-[11px] sm:text-xs font-bold uppercase tracking-widest px-4 py-2 hover:text-blue-600 transition-colors">Seguridad</a>
+                            </div>
 
-            cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                total += itemTotal;
-                count += item.quantity;
-
-                const el = document.createElement('div');
-                el.className = 'bg-stone-800 rounded-xl p-4 border border-stone-700 flex flex-col gap-3';
-                el.innerHTML = `
-                    <div class="flex justify-between items-start gap-2">
-                        <h4 class="font-bold text-white leading-tight">${item.name}</h4>
-                        <span class="text-brand-orange font-semibold whitespace-nowrap">$${itemTotal.toFixed(2)}</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm text-stone-400">Precio uni: $${item.price.toFixed(2)}</span>
-                        <div class="flex items-center gap-3 bg-brand-darker rounded-lg p-1 border border-stone-700">
-                            <button onclick="updateQuantity('${item.id}', -1)" class="w-8 h-8 flex items-center justify-center text-stone-300 hover:text-white hover:bg-stone-700 rounded-md transition-colors">
-                                <i class="ph ph-minus"></i>
-                            </button>
-                            <span class="font-bold w-4 text-center">${item.quantity}</span>
-                            <button onclick="updateQuantity('${item.id}', 1)" class="w-8 h-8 flex items-center justify-center text-stone-300 hover:text-white hover:bg-stone-700 rounded-md transition-colors">
-                                <i class="ph ph-plus"></i>
-                            </button>
+                            <div className="flex items-center gap-3">
+                                <button onClick={() => setCartOpen(true)} className="relative p-2 text-gray-600 hover:text-black transition-colors">
+                                    <Icon name="bag" className="w-6 h-6" />
+                                    {cartItemsCount > 0 && (
+                                        <span className="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                                            {cartItemsCount}
+                                        </span>
+                                    )}
+                                </button>
+                                <button onClick={() => { setCart([]); setModalOpen(true); }} className="bg-blue-600 text-white px-5 py-2.5 rounded-full text-xs font-bold hover:scale-105 transition-all shadow-md hidden sm:block">
+                                    Contacto
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                `;
-                container.appendChild(el);
-            });
+                    </nav>
 
-            countBadge.innerText = count;
-            totalEl.innerText = `$${total.toFixed(2)}`;
+                    {/* HERO */}
+                    <section className="pt-40 pb-20 px-6 hero-gradient overflow-hidden">
+                        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 text-center lg:text-left">
+                            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="flex-1">
+                                <span className="inline-block px-4 py-1.5 bg-blue-50 text-blue-600 text-xs font-bold rounded-full mb-6 tracking-wider uppercase">
+                                    Apple Riobamba • Tienda de Confianza
+                                </span>
+                                <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-8 text-black">
+                                    Pura Calidad <br/>
+                                    <span className="text-gray-300 italic">en tus manos.</span>
+                                </h1>
+                                <p className="text-xl text-gray-500 max-w-xl mb-10 leading-relaxed font-medium mx-auto lg:mx-0">
+                                    Venta de <span className="text-black font-bold">iPhones</span>, AirPods Pro 2 y accesorios premium. Entrega personal y segura en <span className="text-black">Riobamba</span>.
+                                </p>
+                                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                                    <a href="#store" className="bg-black text-white px-10 py-5 rounded-full font-bold shadow-2xl hover:bg-gray-800 transition-all text-lg">
+                                        Explorar Tienda
+                                    </a>
+                                </div>
+                            </motion.div>
+                            
+                            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }} className="flex-1 relative">
+                                <div className="absolute -inset-10 bg-blue-400/20 rounded-full blur-3xl opacity-30 animate-pulse"></div>
+                                <img src={URL_IMAGENES.inicio} alt="ZonaRio Inicio" className="relative z-10 w-full max-w-sm mx-auto filter drop-shadow-[0_35px_35px_rgba(0,0,0,0.15)] hover:scale-105 transition-transform duration-700" />
+                            </motion.div>
+                        </div>
+                    </section>
+
+                    {/* STORE TAB SECTION (CATÁLOGO DINÁMICO) */}
+                    <section id="store" className="py-32 bg-gray-50/50 px-6">
+                        <div className="max-w-7xl mx-auto">
+                            <div className="text-center mb-16">
+                                <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-4 text-black">Catálogo ZonaRio.</h2>
+                                <p className="text-gray-500 font-medium italic">Añade al carrito lo que necesites.</p>
+                            </div>
+
+                            <div className="flex justify-center mb-16">
+                                <div className="bg-white p-1.5 rounded-full border border-gray-100 shadow-sm flex">
+                                    <button onClick={() => setActiveTab('iphones')} className={`px-10 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'iphones' ? 'bg-black text-white shadow-lg' : 'text-gray-400 hover:text-black'}`}>iPhone</button>
+                                    <button onClick={() => setActiveTab('accesorios')} className={`px-10 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'accesorios' ? 'bg-black text-white shadow-lg' : 'text-gray-400 hover:text-black'}`}>Audio & Estuches</button>
+                                </div>
+                            </div>
+
+                            <AnimatePresence mode="wait">
+                                <motion.div 
+                                    key={activeTab} 
+                                    initial={{ opacity: 0, y: 20 }} 
+                                    animate={{ opacity: 1, y: 0 }} 
+                                    exit={{ opacity: 0, y: -20 }} 
+                                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center"
+                                >
+                                    {INVENTARIO
+                                        .filter(producto => producto.categoria === activeTab)
+                                        .map((producto) => (
+                                            <div key={producto.id} className={activeTab === 'iphones' ? 'lg:col-start-2' : ''}>
+                                                <ProductCard 
+                                                    title={producto.title}
+                                                    tag={producto.tag}
+                                                    price={producto.price}
+                                                    desc={producto.desc}
+                                                    img={producto.img}
+                                                    highlight={producto.highlight}
+                                                    stock={producto.stock}
+                                                    onAdd={addToCart}
+                                                />
+                                            </div>
+                                        ))
+                                    }
+                                </motion.div>
+                            </AnimatePresence>
+                        </div>
+                    </section>
+
+                    {/* TRUST STRIP */}
+                    <section id="trust" className="py-24 px-6 border-b border-gray-100">
+                        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+                            <div className="flex flex-col items-center text-center space-y-4">
+                                <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-3xl flex items-center justify-center shadow-inner"><Icon name="shield" className="w-8 h-8" /></div>
+                                <h4 className="text-xl font-bold">Sin Riesgos</h4>
+                                <p className="text-gray-400 text-sm max-w-xs">Pagas al momento de recibir tu equipo en Riobamba. Nada de depósitos previos.</p>
+                            </div>
+                            <div className="flex flex-col items-center text-center space-y-4">
+                                <div className="w-16 h-16 bg-green-50 text-green-600 rounded-3xl flex items-center justify-center shadow-inner"><Icon name="whatsapp" className="w-8 h-8" /></div>
+                                <h4 className="text-xl font-bold">Atención 24/7</h4>
+                                <p className="text-gray-400 text-sm max-w-xs">Escríbenos a cualquiera de nuestros números para coordinar tu entrega hoy mismo.</p>
+                            </div>
+                            <div className="flex flex-col items-center text-center space-y-4">
+                                <div className="w-16 h-16 bg-red-50 text-red-600 rounded-3xl flex items-center justify-center shadow-inner"><Icon name="map" className="w-8 h-8" /></div>
+                                <h4 className="text-xl font-bold">Entrega Local</h4>
+                                <p className="text-gray-400 text-sm max-w-xs">Nos reunimos en puntos seguros de la ciudad para tu total tranquilidad.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* INSTAGRAM CTA */}
+                    <section className="py-32 px-6 text-center bg-[#fbfbfd]">
+                        <div className="max-w-4xl mx-auto space-y-10">
+                            <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-none">Síguenos para los <span className="text-blue-600 italic">Drops semanales.</span></h2>
+                            
+                            <div className="flex flex-col justify-center items-center gap-4 max-w-xs mx-auto">
+                                <a href={REDES_SOCIALES.instagram} target="_blank" className="insta-gradient flex items-center justify-center gap-3 px-8 py-5 rounded-full text-white font-black text-lg hover:scale-105 transition-all shadow-xl w-full">
+                                    <Icon name="instagram" className="w-6 h-6" /> Instagram
+                                </a>
+                                <a href={REDES_SOCIALES.tiktok} target="_blank" className="bg-black flex items-center justify-center gap-3 px-8 py-5 rounded-full text-white font-black text-lg hover:scale-105 transition-all shadow-xl w-full">
+                                    <Icon name="tiktok" className="w-6 h-6" /> TikTok
+                                </a>
+                                <a href={REDES_SOCIALES.facebook} target="_blank" className="bg-[#1877F2] flex items-center justify-center gap-3 px-8 py-5 rounded-full text-white font-black text-lg hover:scale-105 transition-all shadow-xl w-full">
+                                    <Icon name="facebook" className="w-6 h-6" /> Facebook
+                                </a>
+                            </div>
+
+                            <p className="text-gray-400 font-bold uppercase tracking-widest text-xs pt-4">¡Únete a la comunidad ZonaRio!</p>
+                        </div>
+                    </section>
+
+                    {/* WHATSAPP FLOAT */}
+                    <button 
+                        onClick={() => cartItemsCount > 0 ? setCartOpen(true) : setModalOpen(true)}
+                        className="fixed bottom-10 right-10 z-[100] group"
+                    >
+                        <div className="absolute -inset-4 bg-green-400 rounded-full blur-xl opacity-30 group-hover:opacity-50 transition-opacity animate-pulse"></div>
+                        <div className="relative bg-[#25D366] text-white p-5 rounded-full shadow-2xl hover:scale-110 transition-all flex items-center gap-2">
+                            {cartItemsCount > 0 ? (
+                                <><Icon name="bag" className="w-7 h-7" /><span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-5 h-5 rounded-full flex justify-center items-center">{cartItemsCount}</span></>
+                            ) : (
+                                <><Icon name="whatsapp" className="w-7 h-7" /><span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 font-bold text-sm whitespace-nowrap px-0 group-hover:px-2">Hablar con nosotros</span></>
+                            )}
+                        </div>
+                    </button>
+
+                    {/* FOOTER */}
+                    <footer className="py-20 bg-white px-6 border-t border-gray-100">
+                        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 text-gray-400 text-[10px] font-bold uppercase tracking-[0.2em]">
+                            <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white italic">ZR</div>
+                                <span>© 2026 ZonaRio Riobamba</span>
+                            </div>
+                            <div className="flex flex-wrap justify-center gap-6 md:gap-10">
+                                <button 
+                                    onClick={() => setInfoType('garantia')}
+                                    className="hover:text-black transition-colors uppercase tracking-[0.2em]"
+                                >
+                                    Garantía
+                                </button>
+                                <button 
+                                    onClick={() => setInfoType('envios')}
+                                    className="hover:text-black transition-colors uppercase tracking-[0.2em]"
+                                >
+                                    Envíos
+                                </button>
+                                <button 
+                                    onClick={() => setInfoType('soporte')}
+                                    className="hover:text-black transition-colors uppercase tracking-[0.2em]"
+                                >
+                                    Soporte
+                                </button>
+                            </div>
+                            <p className="text-center md:text-right">Ecuador • Tecnología de otro nivel</p>
+                        </div>
+                    </footer>
+                </div>
+            );
         }
 
-        function sendWhatsAppOrder() {
-            if (cart.length === 0) {
-                alert("Tu carrito está vacío. ¡Agrega algunos platillos primero!");
-                return;
-            }
-
-            let text = "🔥 *Hola, quisiera hacer el siguiente pedido en La Casa de los Asados:* 🔥\n\n";
-            let total = 0;
-
-            cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                text += `▪️ ${item.quantity}x ${item.name} - $${itemTotal.toFixed(2)}\n`;
-                total += itemTotal;
-            });
-
-            text += `\n*Total a pagar: $${total.toFixed(2)}*\n\n`;
-            text += "¿Podrían confirmar mi pedido, por favor?";
-
-            const encodedText = encodeURIComponent(text);
-            const url = `https://wa.me/${waNumber}?text=${encodedText}`;
-            
-            window.open(url, '_blank');
-        }
-
-        // Initialize on load
-        window.onload = initMenu;
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>
